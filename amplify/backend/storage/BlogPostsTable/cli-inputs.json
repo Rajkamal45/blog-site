@@ -1,0 +1,48 @@
+{
+  "resourceName": "BlogPostsTable",
+  "tableName": "BlogPosts",
+  "partitionKey": {
+    "fieldName": "postId",
+    "fieldType": "string"
+  },
+  "sortKey": {
+    "fieldName": "",
+    "fieldType": ""
+  },
+  "gsi": [
+    {
+      "name": "PublishedPostsIndex",
+      "partitionKey": {
+        "fieldName": "status",
+        "fieldType": "string"
+      },
+      "sortKey": {
+        "fieldName": "publishedAt",
+        "fieldType": "string"
+      },
+      "projection": {
+        "ProjectionType": "ALL"
+      }
+    },
+    {
+      "name": "AuthorPostsIndex",
+      "partitionKey": {
+        "fieldName": "authorId",
+        "fieldType": "string"
+      },
+      "sortKey": {
+        "fieldName": "publishedAt",
+        "fieldType": "string"
+      },
+      "projection": {
+        "ProjectionType": "ALL"
+      }
+    }
+  ],
+  "triggerFunctions": [
+    {
+      "name": "newsletterFunction",
+      "triggerEvents": ["INSERT", "MODIFY"]
+    }
+  ]
+}
