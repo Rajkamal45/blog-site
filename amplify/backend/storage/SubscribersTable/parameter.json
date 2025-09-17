@@ -1,0 +1,18 @@
+{
+    "tableName": "NewsletterSubscribers",
+    "partitionKeyName": "email",
+    "partitionKeyType": "S",
+    "sortKeyName": "",
+    "sortKeyType": "",
+    "billingMode": "PAY_PER_REQUEST",
+    "gsi": [
+      {
+        "name": "StatusIndex",
+        "partitionKeyName": "status",
+        "partitionKeyType": "S",
+        "sortKeyName": "subscribedAt",
+        "sortKeyType": "S",
+        "billingMode": "PAY_PER_REQUEST"
+      }
+    ]
+  }

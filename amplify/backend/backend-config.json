@@ -30,9 +30,67 @@
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
+    },
+    "blogdbTrigger394f87fc": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn",
+            "StreamArn"
+          ],
+          "category": "storage",
+          "resourceName": "blogdb"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_function_S3Triggerc840f01f_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "S3Triggerc840f01f"
+        }
+      ]
+    },
+    "AMPLIFY_function_S3Triggerc840f01f_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "S3Triggerc840f01f"
+        }
+      ]
+    },
+    "AMPLIFY_function_blogdbTrigger394f87fc_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "blogdbTrigger394f87fc"
+        }
+      ]
+    },
+    "AMPLIFY_function_blogdbTrigger394f87fc_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "blogdbTrigger394f87fc"
+        }
+      ]
     }
   },
   "storage": {
+    "SubscribersTable": {
+      "providerPlugin": "awscloudformation",
+      "service": "DynamoDB"
+    },
+    "blogdb": {
+      "providerPlugin": "awscloudformation",
+      "service": "DynamoDB"
+    },
     "blogstorage": {
       "dependsOn": [
         {

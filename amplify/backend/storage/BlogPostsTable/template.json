@@ -1,0 +1,166 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "DynamoDB resource stack creation using Amplify CLI",
+    "Parameters": {
+      "partitionKeyName": {
+        "Type": "String"
+      },
+      "partitionKeyType": {
+        "Type": "String"
+      },
+      "env": {
+        "Type": "String"
+      },
+      "tableName": {
+        "Type": "String"
+      }
+    },
+    "Resources": {
+      "DynamoDBTable": {
+        "Type": "AWS::DynamoDB::Table",
+        "Properties": {
+          "TableName": {
+            "Fn::If": [
+              "ShouldNotCreateEnvResources",
+              {
+                "Ref": "tableName"
+              },
+              {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Ref": "tableName"
+                    },
+                    "-",
+                    {
+                      "Ref": "env"
+                    }
+                  ]
+                ]
+              }
+            ]
+          },
+          "KeySchema": [
+            {
+              "AttributeName": {
+                "Ref": "partitionKeyName"
+              },
+              "KeyType": "HASH"
+            }
+          ],
+          "AttributeDefinitions": [
+            {
+              "AttributeName": {
+                "Ref": "partitionKeyName"
+              },
+              "AttributeType": {
+                "Ref": "partitionKeyType"
+              }
+            },
+            {
+              "AttributeName": "status",
+              "AttributeType": "S"
+            },
+            {
+              "AttributeName": "publishedAt",
+              "AttributeType": "S"
+            },
+            {
+              "AttributeName": "authorId",
+              "AttributeType": "S"
+            }
+          ],
+          "GlobalSecondaryIndexes": [
+            {
+              "IndexName": "PublishedPostsIndex",
+              "KeySchema": [
+                {
+                  "AttributeName": "status",
+                  "KeyType": "HASH"
+                },
+                {
+                  "AttributeName": "publishedAt",
+                  "KeyType": "RANGE"
+                }
+              ],
+              "Projection": {
+                "ProjectionType": "ALL"
+              },
+              "BillingMode": "PAY_PER_REQUEST"
+            },
+            {
+              "IndexName": "AuthorPostsIndex",
+              "KeySchema": [
+                {
+                  "AttributeName": "authorId",
+                  "KeyType": "HASH"
+                },
+                {
+                  "AttributeName": "publishedAt",
+                  "KeyType": "RANGE"
+                }
+              ],
+              "Projection": {
+                "ProjectionType": "ALL"
+              },
+              "BillingMode": "PAY_PER_REQUEST"
+            }
+          ],
+          "StreamSpecification": {
+            "StreamViewType": "NEW_AND_OLD_IMAGES"
+          },
+          "BillingMode": "PAY_PER_REQUEST"
+        }
+      }
+    },
+    "Conditions": {
+      "ShouldNotCreateEnvResources": {
+        "Fn::Equals": [
+          {
+            "Ref": "env"
+          },
+          "NONE"
+        ]
+      }
+    },
+    "Outputs": {
+      "Name": {
+        "Value": {
+          "Ref": "DynamoDBTable"
+        }
+      },
+      "Arn": {
+        "Value": {
+          "Fn::GetAtt": [
+            "DynamoDBTable",
+            "Arn"
+          ]
+        }
+      },
+      "StreamArn": {
+        "Value": {
+          "Fn::GetAtt": [
+            "DynamoDBTable",
+            "StreamArn"
+          ]
+        }
+      },
+      "PartitionKeyName": {
+        "Value": {
+          "Ref": "partitionKeyName"
+        }
+      },
+      "PartitionKeyType": {
+        "Value": {
+          "Ref": "partitionKeyType"
+        }
+      },
+      "Region": {
+        "Value": {
+          "Ref": "AWS::Region"
+        }
+      }
+    }
+  }
+  

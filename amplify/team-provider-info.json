@@ -14,6 +14,21 @@
     "categories": {
       "auth": {
         "blog1cac5b497": {}
+      },
+      "function": {
+        "S3Triggerc840f01f": {
+          "deploymentBucketName": "amplify-blog1-dev-4077a-deployment",
+          "s3Key": "amplify-builds/S3Triggerc840f01f-6649625464584f523670-build.zip"
+        },
+        "blogdbTrigger394f87fc": {
+          "deploymentBucketName": "amplify-blog1-dev-4077a-deployment",
+          "s3Key": "amplify-builds/blogdbTrigger394f87fc-3578485a715864725765-build.zip"
+        }
+      },
+      "storage": {
+        "blogstorage": {},
+        "blogdb": {},
+        "SubscribersTable": {}
       }
     }
   }

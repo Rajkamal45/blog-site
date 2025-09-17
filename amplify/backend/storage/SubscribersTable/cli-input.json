@@ -1,0 +1,29 @@
+{
+"resourceName": "SubscribersTable",
+  "tableName": "NewsletterSubscribers",
+  "partitionKey": {
+    "fieldName": "email",
+    "fieldType": "string"
+  },
+  "sortKey": {
+    "fieldName": "",
+    "fieldType": ""
+  },
+  "gsi": [
+    {
+      "name": "StatusIndex",
+      "partitionKey": {
+        "fieldName": "status",
+        "fieldType": "string"
+      },
+      "sortKey": {
+        "fieldName": "subscribedAt",
+        "fieldType": "string"
+      },
+      "projection": {
+        "ProjectionType": "ALL"
+      }
+    }
+  ],
+  "triggerFunctions": []
+}

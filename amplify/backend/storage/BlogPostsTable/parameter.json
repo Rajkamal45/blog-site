@@ -1,0 +1,27 @@
+{
+    "tableName": "BlogPosts",
+    "partitionKeyName": "postId",
+    "partitionKeyType": "S",
+    "sortKeyName": "",
+    "sortKeyType": "",
+    "billingMode": "PAY_PER_REQUEST",
+    "gsi": [
+      {
+        "name": "PublishedPostsIndex",
+        "partitionKeyName": "status",
+        "partitionKeyType": "S",
+        "sortKeyName": "publishedAt",
+        "sortKeyType": "S",
+        "billingMode": "PAY_PER_REQUEST"
+      },
+      {
+        "name": "AuthorPostsIndex",
+        "partitionKeyName": "authorId",
+        "partitionKeyType": "S",
+        "sortKeyName": "publishedAt",
+        "sortKeyType": "S",
+        "billingMode": "PAY_PER_REQUEST"
+      }
+    ]
+  }
+  

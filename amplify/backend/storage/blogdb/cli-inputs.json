@@ -1,0 +1,27 @@
+{
+  "resourceName": "blogdb",
+  "tableName": "blogtable",
+  "partitionKey": {
+    "fieldName": "postId",
+    "fieldType": "string"
+  },
+  "gsi": [
+    {
+      "name": "PublishedPostsIndex",
+      "partitionKey": {
+        "fieldName": "postId",
+        "fieldType": "string"
+      }
+    },
+    {
+      "name": "AuthorPostsIndex",
+      "partitionKey": {
+        "fieldName": "postId",
+        "fieldType": "string"
+      }
+    }
+  ],
+  "triggerFunctions": [
+    "blogdbTrigger394f87fc"
+  ]
+}

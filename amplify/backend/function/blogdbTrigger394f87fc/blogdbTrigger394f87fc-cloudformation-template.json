@@ -5,6 +5,18 @@
     "env": {
       "Type": "String"
     },
+    "storageblogdbName": {
+      "Type": "String",
+      "Default": "storageblogdbName"
+    },
+    "storageblogdbArn": {
+      "Type": "String",
+      "Default": "storageblogdbArn"
+    },
+    "storageblogdbStreamArn": {
+      "Type": "String",
+      "Default": "storageblogdbArn"
+    },
     "deploymentBucketName": {
       "Type": "String"
     },
@@ -34,12 +46,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "S3Triggerc840f01f",
+            "blogdbTrigger394f87fc",
             {
               "Fn::Join": [
                 "",
                 [
-                  "S3Triggerc840f01f",
+                  "blogdbTrigger394f87fc",
                   "-",
                   {
                     "Ref": "env"
@@ -80,12 +92,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "S3Triggerc840f01fLambdaRolec840f01f",
+            "blogdbLambdaRole394f87fc",
             {
               "Fn::Join": [
                 "",
                 [
-                  "S3Triggerc840f01fLambdaRolec840f01f",
+                  "blogdbLambdaRole394f87fc",
                   "-",
                   {
                     "Ref": "env"
@@ -154,6 +166,59 @@
             }
           ]
         }
+      }
+    },
+    "blogdbTriggerPolicy": {
+      "DependsOn": [
+        "LambdaExecutionRole"
+      ],
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyName": "lambda-trigger-policy-blogdb",
+        "Roles": [
+          {
+            "Ref": "LambdaExecutionRole"
+          }
+        ],
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "dynamodb:DescribeStream",
+                "dynamodb:GetRecords",
+                "dynamodb:GetShardIterator",
+                "dynamodb:ListStreams"
+              ],
+              "Resource": [
+                {
+                  "Ref": "storageblogdbStreamArn"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "blogdbTrigger": {
+      "Type": "AWS::Lambda::EventSourceMapping",
+      "DependsOn": [
+        "blogdbTriggerPolicy"
+      ],
+      "Properties": {
+        "BatchSize": 100,
+        "Enabled": true,
+        "EventSourceArn": {
+          "Ref": "storageblogdbStreamArn"
+        },
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "LambdaFunction",
+            "Arn"
+          ]
+        },
+        "StartingPosition": "LATEST"
       }
     }
   },
